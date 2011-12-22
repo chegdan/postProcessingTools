@@ -23,13 +23,10 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    vorticity
+    epsilonPoints
 
 Description
-    Calculates and writes the vorticity of velocity field U.
-
-    The -noWrite option just outputs the max/min values without writing
-    the field.
+    Writes the x,y, and z location and value of epsilon to the screen.
 
 \*---------------------------------------------------------------------------*/
 
@@ -40,31 +37,30 @@ Description
 
 void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 {
-   // bool writeResults = !args.optionFound("noWrite");
 
-    IOobject kheader
+    IOobject epsilonheader
     (
-        "k",
+        "epsilon",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ
     );
 
-    if (kheader.headerOk())
+    if (epsilonheader.headerOk())
     {
-        Info<< "% x\t y\t z\t k" << endl;
-        volScalarField k(kheader, mesh);
+        Info<< "% x\t y\t z\t epsilon" << endl;
+        volScalarField epsilon(epsilonheader, mesh);
 	const volVectorField& centers = mesh.C();
 
-	forAll(k, cellI){
+	forAll(epsilon, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<k[cellI]<<endl;
+	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<epsilon[cellI]<<endl;
 
 	}
     }
     else
     {
-        Info<< "    No k" << endl;
+        Info<< "    No epsilon" << endl;
     }
 
     Info<< "\nEnd\n" << endl;

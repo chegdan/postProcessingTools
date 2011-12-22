@@ -1,3 +1,61 @@
 #!/bin/bash
 
+#---script to compile all of the point dumping utilities and misc utilities
 
+cd volVectorField
+
+cd helicity
+   wmake
+cd ..
+
+cd helicityPoints
+   wmake
+cd ..
+
+cd UPoints
+   wmake
+cd ..
+
+cd vorticityPoints
+   wmake
+cd ..
+
+cd yPlus
+   wmake
+cd ..
+
+cd ..
+
+cd volScalarField
+
+cd enstrophyPoints
+   wmake
+cd ..
+
+cd epsilonPoints
+   wmake
+cd ..
+
+cd kPoints
+   wmake
+cd ..
+
+cd nutPoints
+   wmake
+cd ..
+
+cd QPoints
+   wmake
+cd ..
+
+cd uprimePoints
+   wmake
+cd ..
+
+cd yPoints
+   wmake 
+cd ..
+
+cd ..
+
+#-----end script---

@@ -23,13 +23,10 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    vorticity
+    enstrophyPoints
 
 Description
-    Calculates and writes the vorticity of velocity field U.
-
-    The -noWrite option just outputs the max/min values without writing
-    the field.
+    Writes the x,y, and z location and value of enstrophy to the screen.
 
 \*---------------------------------------------------------------------------*/
 
@@ -40,31 +37,30 @@ Description
 
 void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 {
-   // bool writeResults = !args.optionFound("noWrite");
 
-    IOobject kheader
+    IOobject enstrophyheader
     (
-        "k",
+        "enstrophy",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ
     );
 
-    if (kheader.headerOk())
+    if (enstrophyheader.headerOk())
     {
-        Info<< "% x\t y\t z\t k" << endl;
-        volScalarField k(kheader, mesh);
+        Info<< "% x\t y\t z\t enstrophy" << endl;
+        volScalarField enstrophy(enstrophyheader, mesh);
 	const volVectorField& centers = mesh.C();
 
-	forAll(k, cellI){
+	forAll(enstrophy, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<k[cellI]<<endl;
+	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<enstrophy[cellI]<<endl;
 
 	}
     }
     else
     {
-        Info<< "    No k" << endl;
+        Info<< "    No enstrophy" << endl;
     }
 
     Info<< "\nEnd\n" << endl;

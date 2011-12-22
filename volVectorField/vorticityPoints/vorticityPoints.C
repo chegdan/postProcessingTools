@@ -23,13 +23,10 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    vorticity
+    vorticityPoints
 
 Description
-    Calculates and writes the vorticity of velocity field U.
-
-    The -noWrite option just outputs the max/min values without writing
-    the field.
+    prints the vorticity at each x, y, and z location
 
 \*---------------------------------------------------------------------------*/
 
@@ -40,31 +37,31 @@ Description
 
 void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 {
-   // bool writeResults = !args.optionFound("noWrite");
 
-    IOobject kheader
+    IOobject vorticityheader
     (
-        "k",
+        "vorticity",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ
     );
 
-    if (kheader.headerOk())
+    if (vorticityheader.headerOk())
     {
-        Info<< "% x\t y\t z\t k" << endl;
-        volScalarField k(kheader, mesh);
+        Info<< "% x\t y\t z\t vorticityx\t vorticityy\t vorticityz " << endl;
+        volVectorField vorticity(vorticityheader, mesh);
 	const volVectorField& centers = mesh.C();
 
-	forAll(k, cellI){
+	forAll(vorticity, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<k[cellI]<<endl;
+	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<vorticity[cellI].x()<<"\t "<<vorticity[cellI].y()<<"\t "<<vorticity[cellI].z()<<endl;
 
 	}
+
     }
     else
     {
-        Info<< "    No k" << endl;
+        Info<< "    No vorticity" << endl;
     }
 
     Info<< "\nEnd\n" << endl;

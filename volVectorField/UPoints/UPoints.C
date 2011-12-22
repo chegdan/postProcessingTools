@@ -23,13 +23,10 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    vorticity
+    UPoints
 
 Description
-    Calculates and writes the vorticity of velocity field U.
-
-    The -noWrite option just outputs the max/min values without writing
-    the field.
+    writes the components of velocity at each x, y, and z location
 
 \*---------------------------------------------------------------------------*/
 
@@ -40,7 +37,6 @@ Description
 
 void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 {
-   // bool writeResults = !args.optionFound("noWrite");
 
     IOobject Uheader
     (
@@ -62,47 +58,6 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
 	}
 
-	        
-
-
-
-/*
-
-	Info<< "    Calculating vorticity" << endl;
-        volVectorField vorticity
-        (
-            IOobject
-            (
-                "vorticity",
-                runTime.timeName(),
-                mesh,
-                IOobject::NO_READ
-            ),
-            fvc::curl(U)
-        );
-
-        volScalarField magVorticity
-        (
-            IOobject
-            (
-                "magVorticity",
-                runTime.timeName(),
-                mesh,
-                IOobject::NO_READ
-            ),
-            mag(vorticity)
-        );
-
-        Info<< "vorticity max/min : "
-            << max(magVorticity).value() << " "
-            << min(magVorticity).value() << endl;
-
-        if (writeResults)
-        {
-            vorticity.write();
-            magVorticity.write();
-        }
-*/
     }
     else
     {

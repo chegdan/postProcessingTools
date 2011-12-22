@@ -1,3 +1,63 @@
 #!/bin/bash
 
+#---script to clean all of the point dumping utilities and misc utilities
+
+cd volVectorField
+
+cd helicity
+   wclean
+cd ..
+
+cd helicityPoints
+   wclean
+cd ..
+
+cd UPoints
+   wclean
+cd ..
+
+cd vorticityPoints
+   wclean
+cd ..
+
+cd yPlus
+   wclean
+cd ..
+
+cd ..
+
+cd volScalarField
+
+cd enstrophyPoints
+   wclean
+cd ..
+
+cd epsilonPoints
+   wclean
+cd ..
+
+cd kPoints
+   wclean
+cd ..
+
+cd nutPoints
+   wclean
+cd ..
+
+cd QPoints
+   wclean
+cd ..
+
+cd uprimePoints
+   wclean
+cd ..
+
+cd yPoints
+   wclean 
+cd ..
+
+cd ..
+
+#-----end script---#!/bin/bash
+
 
