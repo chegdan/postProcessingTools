@@ -48,15 +48,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (Qheader.headerOk())
     {
-        Info<< "% x\t y\t z\t Q" << endl;
+
+	Info<<"Printing Q criterion point data to Q.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="Q.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t Q" << "\n";
         volScalarField Q(Qheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(Q, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<Q[cellI]<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<Q[cellI]<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
+
     }
     else
     {

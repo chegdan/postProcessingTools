@@ -8,10 +8,6 @@ cd helicity
    wclean
 cd ..
 
-cd helicityPoints
-   wclean
-cd ..
-
 cd UPoints
    wclean
 cd ..
@@ -27,6 +23,10 @@ cd ..
 cd ..
 
 cd volScalarField
+
+cd helicityPoints
+   wclean
+cd ..
 
 cd enstrophyPoints
    wclean

@@ -48,15 +48,28 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (helicityheader.headerOk())
     {
-        Info<< "% x\t y\t z\t helicityx\t helicityy\t helicityz " << endl;
-        volVectorField helicity(helicityheader, mesh);
+	Info<<"Printing helicity point data to helicity.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="helicity.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t helicityx\t helicityy\t helicityz " << "\n";
+        volScalarField helicity(helicityheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(helicity, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<helicity[cellI].x()<<"\t "<<helicity[cellI].y()<<"\t "<<helicity[cellI].z()<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<helicity[cellI]<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
 
     }
     else

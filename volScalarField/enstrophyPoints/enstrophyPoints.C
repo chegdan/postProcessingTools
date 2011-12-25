@@ -48,15 +48,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (enstrophyheader.headerOk())
     {
-        Info<< "% x\t y\t z\t enstrophy" << endl;
+
+	Info<<"Printing enstrophy point data to enstrophy.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="enstrophy.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t enstrophy\n";
         volScalarField enstrophy(enstrophyheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(enstrophy, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<enstrophy[cellI]<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<enstrophy[cellI]<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
+
     }
     else
     {

@@ -8,10 +8,6 @@ cd helicity
    wmake
 cd ..
 
-cd helicityPoints
-   wmake
-cd ..
-
 cd UPoints
    wmake
 cd ..
@@ -27,6 +23,10 @@ cd ..
 cd ..
 
 cd volScalarField
+
+cd helicityPoints
+   wmake
+cd ..
 
 cd enstrophyPoints
    wmake

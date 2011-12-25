@@ -48,15 +48,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (nutheader.headerOk())
     {
-        Info<< "% x\t y\t z\t nut" << endl;
+
+	Info<<"Printing nut point data to nut.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="nut.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t nut" << "\n";
         volScalarField nut(nutheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(nut, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<nut[cellI]<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<nut[cellI]<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
+
     }
     else
     {

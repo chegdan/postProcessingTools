@@ -48,15 +48,28 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (Uheader.headerOk())
     {
-        Info<< "% x\t y\t z\t Ux\t Uy\t Uz " << endl;
+	Info<<"Printing U component point data to U.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="U.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t Ux\t Uy\t Uz " << "\n";
         volVectorField U(Uheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(U, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<U[cellI].x()<<"\t "<<U[cellI].y()<<"\t "<<U[cellI].z()<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<U[cellI].x()<<"\t "<<U[cellI].y()<<"\t "<<U[cellI].z()<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
 
     }
     else

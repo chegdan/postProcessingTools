@@ -48,15 +48,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (uprimeheader.headerOk())
     {
-        Info<< "% x\t y\t z\t uprime" << endl;
+
+	Info<<"Printing uprime point data to uprime.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="uprime.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t uprime" << "\n";
         volScalarField uprime(uprimeheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(uprime, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<uprime[cellI]<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<uprime[cellI]<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
+
     }
     else
     {

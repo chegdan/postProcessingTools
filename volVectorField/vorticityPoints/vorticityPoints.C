@@ -48,15 +48,28 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (vorticityheader.headerOk())
     {
-        Info<< "% x\t y\t z\t vorticityx\t vorticityy\t vorticityz " << endl;
+	Info<<"Printing vorticity point data to vorticity.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="vorticity.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t vorticityx\t vorticityy\t vorticityz " << "\n";
         volVectorField vorticity(vorticityheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(vorticity, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<vorticity[cellI].x()<<"\t "<<vorticity[cellI].y()<<"\t "<<vorticity[cellI].z()<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<vorticity[cellI].x()<<"\t "<<vorticity[cellI].y()<<"\t "<<vorticity[cellI].z()<<"\n";
+
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
 
     }
     else

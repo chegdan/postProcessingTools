@@ -48,15 +48,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (epsilonheader.headerOk())
     {
-        Info<< "% x\t y\t z\t epsilon" << endl;
+
+	Info<<"Printing epsilon point data to epsilon.dat file \n";
+	ofstream dataFile;
+	string fileName;
+	fileName ="epsilon.dat";
+	dataFile.open(fileName.c_str());//open the data file
+        int cellCount=0;
+
+        dataFile<< "% x\t y\t z\t epsilon\n";
         volScalarField epsilon(epsilonheader, mesh);
 	const volVectorField& centers = mesh.C();
 
 	forAll(epsilon, cellI){
 
-	Info<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<epsilon[cellI]<<endl;
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<epsilon[cellI]<<"\n";
+	
+	cellCount++;
 
 	}
+
+	Info<<"\t wrote cell data from "<<cellCount<<" cells"<<endl;
+
+	dataFile.close();//close the data file
+
     }
     else
     {
