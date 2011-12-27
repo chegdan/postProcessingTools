@@ -48,10 +48,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (vorticityheader.headerOk())
     {
-	Info<<"Printing vorticity point data to vorticity.dat file \n";
+	Info<<"Printing vorticity point data to vorticity"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="vorticity.dat";
+	fileName ="vorticity"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 

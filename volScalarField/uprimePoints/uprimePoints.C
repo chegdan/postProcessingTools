@@ -49,10 +49,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     if (uprimeheader.headerOk())
     {
 
-	Info<<"Printing uprime point data to uprime.dat file \n";
+	Info<<"Printing uprime point data to uprime"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="uprime.dat";
+	fileName ="uprime"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 

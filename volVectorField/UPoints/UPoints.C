@@ -48,10 +48,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (Uheader.headerOk())
     {
-	Info<<"Printing U component point data to U.dat file \n";
+	Info<<"Printing U component point data to U"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="U.dat";
+	fileName ="U"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 

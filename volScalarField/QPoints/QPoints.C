@@ -49,10 +49,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     if (Qheader.headerOk())
     {
 
-	Info<<"Printing Q criterion point data to Q.dat file \n";
+	Info<<"Printing Q criterion point data to Q"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="Q.dat";
+	fileName ="Q"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 

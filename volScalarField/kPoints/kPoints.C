@@ -53,10 +53,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     if (kheader.headerOk())
     {
 
-	Info<<"Printing k point data to k.dat file \n";
+	Info<<"Printing k point data to k"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="k.dat";
+	fileName ="k"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 

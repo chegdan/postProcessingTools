@@ -48,10 +48,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 
     if (helicityheader.headerOk())
     {
-	Info<<"Printing helicity point data to helicity.dat file \n";
+	Info<<"Printing helicity point data to helicity"<<runTime.timeName()<<".dat file \n";
 	ofstream dataFile;
 	string fileName;
-	fileName ="helicity.dat";
+	fileName ="helicity"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 
