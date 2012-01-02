@@ -56,13 +56,30 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 
-        dataFile<< "% x\t y\t z\t y" << "\n";
+	int boundaryFaceCount = 0;
+
+        dataFile<< "% x\t y\t z\t y\t boundary\n";
         volScalarField y(yheader, mesh);
 	const volVectorField& centers = mesh.C();
+	const surfaceVectorField& faceCenters = mesh.Cf();
 
+	// print all face values
+	forAll(y.boundaryField(),patchi){
+	
+	label nFaces = mesh.boundaryMesh()[patchi].size();
+        if(!isA<emptyPolyPatch>(mesh.boundaryMesh()[patchi])){
+			for(int facei = 0; facei<nFaces; facei++){
+			dataFile<<" "<<faceCenters.boundaryField()[patchi][facei].x()<<"\t "<<faceCenters.boundaryField()[patchi][facei].y()<<"\t "<<faceCenters.boundaryField()[patchi][facei].z()<<"\t "<<y.boundaryField()[patchi][facei]<<"\t 1\n";
+			boundaryFaceCount++;
+			}
+		}	
+	}
+	Info<<"\t wrote face data from "<<boundaryFaceCount<<" boundary faces"<<endl;
+
+	// print the internal field to the file
 	forAll(y, cellI){
 
-	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<y[cellI]<<"\n";
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<y[cellI]<<"\t 0\n";
 
 	cellCount++;
 
