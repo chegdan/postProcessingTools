@@ -27,7 +27,7 @@
         mesh
     );
 
-    Info<< "Reading field C\n" << endl;
+ /*   Info<< "Reading field C\n" << endl;
     volScalarField C
     (
         IOobject
@@ -40,5 +40,20 @@
         ),
         mesh
     );
+*/
 
+Info<< "Reading/calculating face flux field phi\n" << endl;
+
+surfaceScalarField phi
+(
+    IOobject
+    (
+        "phi",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
+);
     

@@ -45,8 +45,12 @@ int main(int argc, char *argv[])
 #   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    while (runTime.loop())
+    {
 
 	Info<<"\t running some swak post-processing"<<endl;
+    }
+
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"
