@@ -16,9 +16,18 @@ cd vorticityPoints
    wmake
 cd ..
 
-cd yPlus
-   wmake
-cd ..
+  if [ "$1" = ext ]
+    then
+	echo "compiling extends version of yPlus"
+	cd yPlus
+   	wmake
+	cd ..
+    else
+	echo "compiling OpenCFD version of yPlus"
+	cd yPlusCFD
+   	wmake
+	cd ..
+  fi
 
 cd ..
 
@@ -33,6 +42,10 @@ cd enstrophyPoints
 cd ..
 
 cd epsilonPoints
+   wmake
+cd ..
+
+cd CPoints
    wmake
 cd ..
 
@@ -58,4 +71,11 @@ cd ..
 
 cd ..
 
+cd miscTools
+
+cd postSwak
+   wmake
+cd ..
+
+cd ..
 #-----end script---

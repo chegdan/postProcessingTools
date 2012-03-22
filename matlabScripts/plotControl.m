@@ -1,0 +1,1 @@
+[inputFile, z_lower, z_upper, R, cuts] = textread('plotControl.dat','%s %f %f %f %u', 1);

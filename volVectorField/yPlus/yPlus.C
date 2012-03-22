@@ -106,97 +106,6 @@ void calcIncompressibleYPlus
     }
 }
 
-void calcCompressibleYPlus
-(
-    const fvMesh& mesh,
-    const Time& runTime,
-    const volVectorField& U,
-    volScalarField& yPlus
-)
-{
-    typedef compressible::RASModels::mutWallFunctionFvPatchScalarField
-        wallFunctionPatchField;
-
-    IOobject rhoHeader
-    (
-        "rho",
-        runTime.timeName(),
-        mesh,
-        IOobject::MUST_READ,
-        IOobject::NO_WRITE
-    );
-
-    if (!rhoHeader.headerOk())
-    {
-        Info<< "    no rho field" << endl;
-        return;
-    }
-
-    Info << "Reading field rho\n" << endl;
-    volScalarField rho(rhoHeader, mesh);
-
-    #include "compressibleCreatePhi.H"
-
-    autoPtr<basicPsiThermo> pThermo
-    (
-        basicPsiThermo::New(mesh)
-    );
-    basicPsiThermo& thermo = pThermo();
-
-    autoPtr<compressible::RASModel> RASModel
-    (
-        compressible::RASModel::New
-        (
-            rho,
-            U,
-            phi,
-            thermo
-        )
-    );
-    volScalarField::GeometricBoundaryField y = nearWallDist(mesh).y();
-
-    const volScalarField& mut = RASModel->mut();
-
-    const volScalarField::GeometricBoundaryField mutPatches =
-        RASModel->mut()().boundaryField();
-
-    bool foundMutPatch = false;
-    forAll(mutPatches, patchi)
-    {
-        if (isA<wallFunctionPatchField>(mutPatches[patchi]))
-        {
-            foundMutPatch = true;
-
-            const wallFunctionPatchField& mutPw =
-                dynamic_cast<const wallFunctionPatchField&>
-                    (mutPatches[patchi]);
-
-	    yPlus.boundaryField()[patchi] =
-	        y[patchi]
-	      * sqrt
-	        (
-		   mut.boundaryField()[patchi]
-		 * mag(U.boundaryField()[patchi].snGrad())
-		 / rho.boundaryField()[patchi]
-                )
-	      / (RASModel->mu().boundaryField()[patchi]/rho.boundaryField()[patchi]);
-
-            const scalarField& Yp = yPlus.boundaryField()[patchi];
-
-            Info<< "Patch " << patchi
-                << " named " << mutPw.patch().name()
-                << " y+ : min: " << min(Yp) << " max: " << max(Yp)
-                << " average: " << average(Yp) << nl << endl;
-        }
-    }
-
-    if (!foundMutPatch)
-    {
-        Info<< "    no " << wallFunctionPatchField::typeName << " patches"
-            << endl;
-    }
-}
-
 int main(int argc, char *argv[])
 {
     timeSelector::addOptions();
@@ -254,7 +163,7 @@ int main(int argc, char *argv[])
 
 	if (compressible)
 	{
-	    calcCompressibleYPlus(mesh, runTime, U, yPlus);
+	    Info<<"you're gonna need another tool for this one buddy"<<endl;
 	}
 	else
 	{

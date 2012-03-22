@@ -20,6 +20,10 @@ cd yPlus
    wclean
 cd ..
 
+cd yPlusCFD
+   wclean
+cd ..
+
 cd ..
 
 cd volScalarField
@@ -33,6 +37,10 @@ cd enstrophyPoints
 cd ..
 
 cd epsilonPoints
+   wclean
+cd ..
+
+cd CPoints
    wclean
 cd ..
 
@@ -54,6 +62,14 @@ cd ..
 
 cd yPoints
    wclean 
+cd ..
+
+cd ..
+
+cd miscTools
+
+cd postSwak
+   wclean
 cd ..
 
 cd ..

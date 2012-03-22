@@ -32,6 +32,7 @@ Description
 
 #include "calc.H"
 #include "fvc.H"
+#include <fstream>
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -49,7 +50,7 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     if (vorticityheader.headerOk())
     {
 	Info<<"Printing vorticity point data to vorticity"<<runTime.timeName()<<".dat file \n";
-	ofstream dataFile;
+	std::ofstream dataFile;
 	string fileName;
 	fileName ="vorticity"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file

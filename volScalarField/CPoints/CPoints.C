@@ -23,10 +23,10 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    yPoints
+    CPoints
 
 Description
-    Writes the x,y, and z location and value of y to the screen.
+    Writes the x,y, and z location and value of C to the screen.
 
 \*---------------------------------------------------------------------------*/
 
@@ -39,38 +39,38 @@ Description
 void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 {
 
-    IOobject yheader
+    IOobject Cheader
     (
-        "y",
+        "C",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ
     );
 
-    if (yheader.headerOk())
+    if (Cheader.headerOk())
     {
 
-	Info<<"Printing y point data to y"<<runTime.timeName()<<".dat file \n";
+	Info<<"Printing C point data to C"<<runTime.timeName()<<".dat file \n";
 	std::ofstream dataFile;
 	string fileName;
-	fileName ="y"+ runTime.timeName() +".dat";
+	fileName ="C"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
         int cellCount=0;
 
-	int boundaryFaceCount = 0;
+        int boundaryFaceCount = 0;
 
-        dataFile<< "% x\t y\t z\t y\t boundary\n";
-        volScalarField y(yheader, mesh);
+        dataFile<< "% x\t y\t z\t C\t boundary\n";
+        volScalarField C(Cheader, mesh);
 	const volVectorField& centers = mesh.C();
 	const surfaceVectorField& faceCenters = mesh.Cf();
 
 	// print all face values
-	forAll(y.boundaryField(),patchi){
+	forAll(C.boundaryField(),patchi){
 	
 	label nFaces = mesh.boundaryMesh()[patchi].size();
         if(!isA<emptyPolyPatch>(mesh.boundaryMesh()[patchi])){
 			for(int facei = 0; facei<nFaces; facei++){
-			dataFile<<" "<<faceCenters.boundaryField()[patchi][facei].x()<<"\t "<<faceCenters.boundaryField()[patchi][facei].y()<<"\t "<<faceCenters.boundaryField()[patchi][facei].z()<<"\t "<<y.boundaryField()[patchi][facei]<<"\t 1\n";
+			dataFile<<" "<<faceCenters.boundaryField()[patchi][facei].x()<<"\t "<<faceCenters.boundaryField()[patchi][facei].y()<<"\t "<<faceCenters.boundaryField()[patchi][facei].z()<<"\t "<<C.boundaryField()[patchi][facei]<<"\t 1\n";
 			boundaryFaceCount++;
 			}
 		}	
@@ -78,10 +78,10 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
 	Info<<"\t wrote face data from "<<boundaryFaceCount<<" boundary faces"<<endl;
 
 	// print the internal field to the file
-	forAll(y, cellI){
+	forAll(C, cellI){
 
-	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<y[cellI]<<"\t 0\n";
-
+	dataFile<<" "<<centers[cellI].x()<<"\t "<<centers[cellI].y()<<"\t "<<centers[cellI].z()<<"\t "<<C[cellI]<<"\t 0\n";
+	
 	cellCount++;
 
 	}
@@ -93,7 +93,7 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     }
     else
     {
-        Info<< "    No y" << endl;
+        Info<< "    No C" << endl;
     }
 
     Info<< "\nEnd\n" << endl;

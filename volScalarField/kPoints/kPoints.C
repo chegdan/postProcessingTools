@@ -35,6 +35,7 @@ Description
 
 #include "calc.H"
 #include "fvc.H"
+#include <fstream>
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -54,7 +55,7 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
     {
 
 	Info<<"Printing k point data to k"<<runTime.timeName()<<".dat file \n";
-	ofstream dataFile;
+	std::ofstream dataFile;
 	string fileName;
 	fileName ="k"+ runTime.timeName() +".dat";
 	dataFile.open(fileName.c_str());//open the data file
