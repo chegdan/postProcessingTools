@@ -51,7 +51,7 @@
                 IOobject::NO_WRITE
             ),
             mesh,
-            dimensionedScalar("uTau", dimVelocity, 0.0)
+            dimensionedScalar("uTau", dimVelocity, SMALL)
         );
 
         Info<< "Reading field U\n" << endl;

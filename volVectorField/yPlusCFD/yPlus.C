@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         {
             const fvPatch& currPatch = patches[patchi];
 
-            if (typeid(currPatch) == typeid(wallFvPatch))
+            if (isA<wallFvPatch>(currPatch))
             {
                 yPlusTemp.boundaryField()[patchi] =
                     d[patchi]
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
                 uTau.boundaryField()[patchi] =
                     sqrt
                     (
-		    RASModel->nu()
+		    RASModel->nu()()
                    *mag(U.boundaryField()[patchi].snGrad())
                     );
 
@@ -117,29 +117,29 @@ const surfaceVectorField& faceCenters = mesh.Cf();
 	forAll(uTau, cellI){
 
 
-		forAll(uTau.boundaryField(),patchi){
-            const fvPatch& currPatch = patches[patchi];
+		forAll(patches, patchi){
+            		const fvPatch& currPatch = patches[patchi];
 	
-		label nFaces = mesh.boundaryMesh()[patchi].size();
+			label nFaces = mesh.boundaryMesh()[patchi].size();
         
-		if(typeid(currPatch) == typeid(wallFvPatch)){
-			for(int facei = 0; facei<nFaces; facei++){
+			if(isA<wallFvPatch>(currPatch)){
+				for(int facei = 0; facei<nFaces; facei++){
 
-			dimensionedScalar cellFaceDist("cellFaceDist",dimensionSet(0,0,0,0,0,0,0),scalar(1));
+				//dimensionedScalar cellFaceDist("cellFaceDist",dimensionSet(0,0,0,0,0,0,0),scalar(1));
+				scalar cellFaceDist ;
 
-			cellFaceDist = Foam::sqrt(sqr(centers[cellI].x()-faceCenters.boundaryField()[patchi][facei].x()) + sqr(centers[cellI].y()-faceCenters.boundaryField()[patchi][facei].y())+ sqr(centers[cellI].z()-faceCenters.boundaryField()[patchi][facei].z()));
-				
+				cellFaceDist = Foam::sqrt(sqr(centers[cellI].x()-faceCenters.boundaryField()[patchi][facei].x()) + sqr(centers[cellI].y()-faceCenters.boundaryField()[patchi][facei].y())+ sqr(centers[cellI].z()-faceCenters.boundaryField()[patchi][facei].z()));
 
-//        Info << "writing distance" << cellFaceDist <<endl;
 				//convert the y value for comparison
 				scalar yTemp = y[cellI];
 
+				scalar diffDist = abs(cellFaceDist - yTemp)/max(abs(cellFaceDist),SMALL);
+
 				//compare the values
-				if( cellFaceDist.value() <= yTemp){
-					uTau[cellI] = uTau.boundaryField()[patchi][facei];
-					}
+				//if( cellFaceDist == yTemp){ uTau[cellI] = uTau.boundaryField()[patchi][facei];	}
+				if( diffDist <= 0.001){ uTau[cellI] = uTau.boundaryField()[patchi][facei];	}
 	
-				}
+					}
 			}	
 		}
 
@@ -147,15 +147,18 @@ const surfaceVectorField& faceCenters = mesh.Cf();
 	}
 //uTau.write();
         yPlus = y.y() * uTau / RASModel->nu();
-	//uPlus = U / uTau;
+
+	dimensionedScalar UUnits ( "UUnits", dimensionSet(0,1,-1,0,0), 1.0 ); 
+
+	uPlus = U / stabilise(uTau, SMALL*UUnits);
 	
-	forAll(uPlus, cellI){
+	/*forAll(uPlus, cellI){
 	
         	uPlus[cellI].x() = U[cellI].x() / max(uTau[cellI],SMALL);
        		uPlus[cellI].y() = U[cellI].y() / max(uTau[cellI],SMALL);
         	uPlus[cellI].z() = U[cellI].z() / max(uTau[cellI],SMALL);
 
-	}
+	}*/
        
         Info << "Writing yPlus and uPlus to corresponding fields." << nl <<endl;
         yPlus.write();
