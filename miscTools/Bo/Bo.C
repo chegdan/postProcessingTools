@@ -374,6 +374,20 @@ void Foam::calc(const argList& args, const Time& runTime, const fvMesh& mesh)
         if (writeResults)
         {
             BoPtr().write();
+
+	volVectorField cellBo
+            (
+                IOobject
+                (
+                    "cellBo",
+                    runTime.timeName(),
+                    mesh,
+                    IOobject::NO_READ
+                ),
+                fvc::reconstruct(BoPtr()*mesh.magSf())
+            );
+
+            cellBo.write();
         }
     }
     else
