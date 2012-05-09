@@ -72,6 +72,10 @@ cd postSwak
    wclean
 cd ..
 
+cd Bo
+   wclean
+cd ..
+
 cd ..
 
 #-----end script---#!/bin/bash
